@@ -292,7 +292,7 @@ class Checker {
             }
             case "as_expr": {
                 String num = check(a.get(0), env);
-                String ty  = a.get(1).token.lexeme;
+                String ty  = a.get(1).get(0).token.lexeme;
                 if (!validVariableType(num) || !validVariableType(ty)) {
                    error(16, a);
                 }

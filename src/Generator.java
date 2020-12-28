@@ -394,6 +394,7 @@ class Generator {
                 return;
             }
             case "as_expr": {
+                gen(a.get(0), env, begin, next);
                 if (a.get(0).type.equals(a.type)) {
                     return;
                 }
