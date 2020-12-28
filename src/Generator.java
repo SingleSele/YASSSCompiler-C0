@@ -167,6 +167,12 @@ class Generator {
                 BasicBlock ret     = currentFn.newBlock("return");
                 returns.push(ret);
                 ret.add(new BasicBlock.Code() {{
+                        opcode = 0x0b;
+                        param = 0;
+                }});
+
+                ret.add(new BasicBlock.Code() {{ opcode = 0x01; param = 0;}}); 
+                ret.add(new BasicBlock.Code() {{
                     opcode = 0x17;
                 }});
                 ret.add(new BasicBlock.Code() {{
@@ -381,7 +387,9 @@ class Generator {
                     }});
 
                     begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = 0;}}); 
-                    begin.jumpLink(returns.peek());
+                    begin.add(new BasicBlock.Code() {{  opcode = 0x17;   }});
+                    begin.add(new BasicBlock.Code() {{  opcode = 0x49;   }});
+
                     return;
                 } else {
                     begin.add(new BasicBlock.Code() {{
@@ -389,7 +397,8 @@ class Generator {
                         param = 0;
                     }});
                     gen(a.get(0), env, begin, next);
-                    begin.jumpLink(returns.peek());
+                    begin.add(new BasicBlock.Code() {{  opcode = 0x17;   }});
+                    begin.add(new BasicBlock.Code() {{  opcode = 0x49;   }});
                     return;                      
                 }
             }
@@ -521,6 +530,7 @@ class Generator {
 
     public static void main(String []args) {
         try {
+        System.out.println("1");
             var f = new FileInputStream(new File(args[0]));
             var t = new Tokenizer(f);
             var p = new Parser(t);
