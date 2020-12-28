@@ -43,7 +43,7 @@ class Parser {
     }
 
     boolean have_expr() {
-        return have(Token.TYPE_IDENT, Token.TYPE_L_PAREN, Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF, Token.TYPE_LITS);
+        return have(Token.TYPE_IDENT, Token.TYPE_L_PAREN, Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF, Token.TYPE_LITS, Token.TYPE_MINUS);
     }
 
     void error(int n) {

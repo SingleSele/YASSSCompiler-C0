@@ -102,7 +102,13 @@ class Tokenizer implements Iterable<Token>, Iterator<Token> {
                  } else {
                       return new Token(Token.TYPE_ASSIGN, in);
                  }
-            case '!': return new Token(Token.TYPE_NEQ, in);
+            case '!': {
+                if (peekch() == '=') {
+                    nextch();
+                    return new Token(Token.TYPE_NEQ, in);
+                }
+                error(16);
+            }
             case '<':  
                  if (peekch() != '=') {
                       return new Token(Token.TYPE_LT, in);
