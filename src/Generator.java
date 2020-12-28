@@ -250,7 +250,7 @@ class Generator {
                     bb.jumpLink(next);
                 }
                 if (a.subs.size() % 2 == 1) {
-                    BasicBlock bb = lbb.get(lbb.size() - 1);
+                    BasicBlock bb = lbb.get(lbb.size() - 2);
                     gen(a.get(a.subs.size() - 1), env, bb, next);
                 }
                 
