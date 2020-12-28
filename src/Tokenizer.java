@@ -32,6 +32,7 @@ class Tokenizer implements Iterable<Token>, Iterator<Token> {
         try {
             int c = is.read();
             currentChar = c != -1 ? (char)c : EOFCHAR;
+            System.out.print(currentChar);            
             return out;
         } catch (EOFException ex) {
             currentChar = EOFCHAR;
