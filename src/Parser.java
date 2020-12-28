@@ -63,13 +63,12 @@ class Parser {
         
 
     AST parse_as_expr() {
-        AST ret = new AST("as_expr");
-        ret.add(parse_negate_expr());
-        if (skip(Token.TYPE_AS_KW)) {
-            ret.add(parse_ident_expr());
-        }
-        if (ret.size() == 1) {
-            return ret.get(0);
+        AST ret = parse_negate_expr();
+        while (skip(Token.TYPE_AS_KW)) {
+            AST newa = new AST("as_expr");
+            newa.add(ret);
+            newa.add(parse_ident_expr());
+            ret = newa;
         }
         return ret;
     }
