@@ -39,7 +39,7 @@ class Parser {
     }
 
     boolean have_statement() {
-        return have_expr() || have(Token.TYPE_LET_KW, Token.TYPE_CONST_KW, Token.TYPE_IF_KW, Token.TYPE_WHILE_KW, Token.TYPE_BREAK_KW, Token.TYPE_CONTINUE_KW, Token.TYPE_RETURN_KW, Token.TYPE_L_BRACE, Token.TYPE_SEMICOLON);
+        return have_expr() || have(Token.TYPE_LET_KW, Token.TYPE_CONST_KW, Token.TYPE_IF_KW, Token.TYPE_WHILE_KW, Token.TYPE_BREAK_KW, Token.TYPE_CONTINUE_KW, Token.TYPE_RETURN_KW, Token.TYPE_L_BRACE, Token.TYPE_SEMICOLON, Token.TYPE_L_BRACE);
     }
 
     boolean have_expr() {
@@ -47,7 +47,8 @@ class Parser {
     }
 
     void error(int n) {
-        System.exit(1);
+    throw new RuntimeException();
+//        System.exit(1);
     }
 
     Token must(String type) {
@@ -325,6 +326,8 @@ class Parser {
             return parse_return_stmt();
         } else if (have(Token.TYPE_LET_KW, Token.TYPE_CONST_KW)) {
             return parse_decl_stmt();
+        } else if (have(Token.TYPE_L_BRACE)) {
+            return parse_block_stmt();
         } else {
             System.out.println("Unexpected " + peekToken());
             error(4);

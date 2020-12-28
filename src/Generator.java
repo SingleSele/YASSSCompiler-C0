@@ -219,8 +219,9 @@ class Generator {
                 }
                 lbb.add(next);
                 int i = 0;
+                Env e = env.subenv();
                 for (AST sub : a.subs) {
-                    gen(sub, env, lbb.get(i), lbb.get(i + 1));
+                    gen(sub, e, lbb.get(i), lbb.get(i + 1));
                     ++i;
                 }
                 return;

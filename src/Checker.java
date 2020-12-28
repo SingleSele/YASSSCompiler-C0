@@ -171,7 +171,7 @@ class Checker {
             case "block_stmt": {      
                 String retvalue = "return void";
                 for (AST sub : a.subs) {
-                    String ret = check(sub, env);
+                    String ret = check(sub, sub.is("block_stmt") ? env.subenv() : env);
                     if (!ret.equals("return void")) {
                         retvalue = ret;
                     }
