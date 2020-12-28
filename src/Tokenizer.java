@@ -97,9 +97,9 @@ class Tokenizer implements Iterable<Token>, Iterator<Token> {
                  }
             case '=': 
                  if (peekch() == '=') {
+                      nextch();
                       return new Token(Token.TYPE_EQ, in + "=");
                  } else {
-                      nextch();
                       return new Token(Token.TYPE_ASSIGN, in);
                  }
             case '!': return new Token(Token.TYPE_NEQ, in);

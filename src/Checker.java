@@ -12,7 +12,7 @@ class Checker {
         if (n.is("decl_stmt")) {
            String vname = n.get(1).token.lexeme;
            String vtype = n.get(2).token.lexeme;
-           boolean visConst = n.get(0).equals(Token.TYPE_CONST_KW);
+           boolean visConst = n.get(0).token.is(Token.TYPE_CONST_KW);
            v = new Env.Variable() {{
                name = vname;
                type = vtype;
