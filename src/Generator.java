@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.nio.*;
 class Generator {
     void error(int c, AST n) {
         System.out.print(n);
@@ -75,12 +76,12 @@ class Generator {
            
            v = new Env.Variable() {{
                name = vname;
-               type = "string";
+               type = n.get(0).token.is(Token.TYPE_LITS) ? "string" : "double";
                isConst = visConst;
                node = n;
                segment = "g";
                offset = globalOffset++;
-               globals.add(n.get(0).token.lexeme);
+               globals.add((type.equals("double") ? "\0double" : "") + n.get(0).token.lexeme);
            }};
         }
         if (v == null) {
@@ -377,9 +378,13 @@ class Generator {
                 if (a.get(0).token.is(Token.TYPE_LITI)) {
                     int val = Integer.parseInt(a.get(0).token.lexeme);
                     begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = val;}}); 
-                } else {
+                } else if (a.get(0).token.is(Token.TYPE_LITS)) {
                     addVariable(globalEnv, a);
                     begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = globalOffset - 1;}});             
+                } else if (a.get(0).token.is(Token.TYPE_LITF)) {
+                    addVariable(globalEnv, a);
+                    begin.add(new BasicBlock.Code() {{ opcode = 0x0c; param = globalOffset - 1;}});
+                    begin.add(new BasicBlock.Code() {{ opcode = 0x13; }});
                 }
                 return;
             }
@@ -505,6 +510,13 @@ class Generator {
         return; 
     }
 
+    void writeDouble(DataOutputStream dos, double a) throws IOException {
+        ByteBuffer bb = ByteBuffer.allocate(8);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.putDouble(a);
+        dos.write(bb.array(), 0, 8);
+    }
+
 
     public void output(OutputStream os) throws IOException {
         DataOutputStream dos = new DataOutputStream(os);
@@ -518,9 +530,16 @@ class Generator {
                 dos.writeInt(8);
                 dos.writeLong(0);
             } else {
-                dos.writeByte(1);
-                dos.writeInt(globals.get(i).length());
-                dos.write(globals.get(i).getBytes(), 0, globals.get(i).length());
+                String k = globals.get(i);
+                if (k.charAt(0) == (char)0 && k.substring(0, 7).equals("\0double")) {
+                    dos.writeByte(1);
+                    dos.writeInt(8);
+                    writeDouble(dos, Double.parseDouble(k.substring(7, k.length())));
+                } else {
+                    dos.writeByte(1);
+                    dos.writeInt(globals.get(i).length());
+                    dos.write(globals.get(i).getBytes(), 0, globals.get(i).length());
+                }
             }
         }
         
