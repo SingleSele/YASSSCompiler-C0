@@ -270,7 +270,6 @@ class Generator {
                 Env newenv = new Env() {{
                     next = env;
                 }};
-
                 gen(a.get(1), newenv, body, bb);
                 body.jumpLink(bb);
                 breaks.pop();

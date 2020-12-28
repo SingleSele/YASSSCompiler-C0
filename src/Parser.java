@@ -259,28 +259,27 @@ class Parser {
         return ret;
     }
     AST parse_add_expr() {
-        AST ret = new AST("operator_expr");
-        ret.add(parse_mul_expr());
+        AST ret = parse_mul_expr();
         while (have(Token.TYPE_PLUS, Token.TYPE_MINUS)) {
-            ret.add(AST.token(nextToken()));
-            ret.add(parse_mul_expr());
-        }
-        if (ret.size() == 1) {
-            return ret.get(0);
+            AST nret = new AST("operator_expr");
+            nret.add(ret);
+            nret.add(AST.token(nextToken()));
+            nret.add(parse_mul_expr());
+            ret = nret;
         }
         return ret;
     }
     AST parse_mul_expr() {
-        AST ret = new AST("operator_expr");
-        ret.add(parse_as_expr());
+        AST ret = parse_as_expr();
         while (have(Token.TYPE_MUL, Token.TYPE_DIV)) {
-            ret.add(AST.token(nextToken()));
-            ret.add(parse_as_expr());
-        }
-        if (ret.size() == 1) {
-            return ret.get(0);
+            AST nret = new AST("operator_expr");
+            nret.add(ret);
+            nret.add(AST.token(nextToken()));
+            nret.add(parse_as_expr());
+            ret = nret;
         }
         return ret;
+
     }
     AST parse_program() {
         AST ret = new AST("program");
