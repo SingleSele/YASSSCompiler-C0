@@ -4,7 +4,7 @@ class Checker {
     void error(int c, AST n) {
         System.out.print(n);
 //        throw new RuntimeException("" + (300 + c));
-        System.exit(300 + c);
+        System.exit(1);
     }
     
     void addVariable(Env env, AST n) {
@@ -342,18 +342,4 @@ class Checker {
         error(50, a);
         return "";
     }
-
-
-    public static void main(String []args) {
-        try {
-            var f = new FileInputStream(new File("a.txt"));
-            var t = new Tokenizer(f);
-            var p = new Parser(t);
-            var c = new Checker();
-            System.out.println(c.check(p.parse_program(), new Env()));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
- 
 }

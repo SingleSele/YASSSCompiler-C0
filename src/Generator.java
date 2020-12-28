@@ -3,8 +3,8 @@ import java.io.*;
 class Generator {
     void error(int c, AST n) {
         System.out.print(n);
-        throw new RuntimeException("" + (400 + c));
-//        System.exit(400 + c);
+//        throw new RuntimeException("" + (400 + c));
+        System.exit(1);
     }
 
     int globalOffset = 0,

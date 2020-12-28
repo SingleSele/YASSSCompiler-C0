@@ -74,7 +74,7 @@ class Tokenizer implements Iterable<Token>, Iterator<Token> {
     }   
 
     void error(int c) {
-        System.exit(200 + c);
+        System.exit(1);
     }
 
     Token symbol() {

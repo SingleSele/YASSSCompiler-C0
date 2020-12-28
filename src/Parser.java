@@ -47,7 +47,7 @@ class Parser {
     }
 
     void error(int n) {
-        System.exit(100 + n);
+        System.exit(1);
     }
 
     Token must(String type) {
@@ -344,15 +344,5 @@ class Parser {
         return ret;
     } 
 
-    public static void main(String []args) {
-        try {
-            var f = new FileInputStream(new File("a.txt"));
-            var t = new Tokenizer(f);
-            var p = new Parser(t);
-            System.out.println(p.parse_program());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
     
 }
