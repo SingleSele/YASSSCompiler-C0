@@ -274,7 +274,7 @@ class Checker {
             case "literal_expr": {
                 switch (a.get(0).token.type) {
                     case Token.TYPE_LITI: return (a.type = "int");
-                    case Token.TYPE_LITS: return (a.type = "str");
+                    case Token.TYPE_LITS: return (a.type = "int");
                     case Token.TYPE_LITF: return (a.type = "double");
                     case Token.TYPE_LITC: return (a.type = "int");
                     default:

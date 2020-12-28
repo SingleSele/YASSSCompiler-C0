@@ -17,7 +17,7 @@ class Generator {
     int fncount = 0;
     List <BasicBlock.Function> fns = new ArrayList<>();
     List <String> globals = new ArrayList<>();
-
+    Env globalEnv;
     
     void addVariable(Env env, AST n) {
         Env.Variable v = null;
@@ -69,6 +69,19 @@ class Generator {
                offset = paramOffset++;
 
            }};
+        } else if(n.is("literal_expr")) {
+           String vname = "a" + globalOffset;
+           boolean visConst = true;
+           
+           v = new Env.Variable() {{
+               name = vname;
+               type = "string";
+               isConst = visConst;
+               node = n;
+               segment = "g";
+               offset = globalOffset++;
+               globals.add(n.get(0).token.lexeme);
+           }};
         }
         if (v == null) {
             error(1, n);
@@ -97,6 +110,7 @@ class Generator {
     void gen(AST a, Env env, BasicBlock begin, BasicBlock next) {
         switch (a.head) {
 	        case "program":  {
+    	        globalEnv = env;
     	        BasicBlock.Function start = new BasicBlock.Function();
 	            start.nParam = 1;
 	            fns.add(0, start);
@@ -359,8 +373,13 @@ class Generator {
             }
             
             case "literal_expr": {
-                int val = Integer.parseInt(a.get(0).token.lexeme);
-                begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = val;}}); 
+                if (a.get(0).token.is(Token.TYPE_LITI)) {
+                    int val = Integer.parseInt(a.get(0).token.lexeme);
+                    begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = val;}}); 
+                } else {
+                    addVariable(globalEnv, a);
+                    begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = globalOffset - 1;}});             
+                }
                 return;
             }
             case "negate_expr": {

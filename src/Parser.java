@@ -43,7 +43,7 @@ class Parser {
     }
 
     boolean have_expr() {
-        return have(Token.TYPE_IDENT, Token.TYPE_L_PAREN, Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF);
+        return have(Token.TYPE_IDENT, Token.TYPE_L_PAREN, Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF, Token.TYPE_LITS);
     }
 
     void error(int n) {
@@ -235,7 +235,7 @@ class Parser {
             return parse_ident_expr();
         } else if (have(Token.TYPE_L_PAREN)) {
             return parse_group_expr();
-        } else if (have(Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF)) {
+        } else if (have(Token.TYPE_LITI, Token.TYPE_LITC, Token.TYPE_LITF, Token.TYPE_LITS)) {
             return parse_literal_expr();
         } else {
             System.out.println("Unexpected " + peekToken());
