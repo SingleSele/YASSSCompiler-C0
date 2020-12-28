@@ -376,7 +376,7 @@ class Generator {
             
             case "literal_expr": {
                 if (a.get(0).token.is(Token.TYPE_LITI)) {
-                    int val = Integer.parseInt(a.get(0).token.lexeme);
+                    long val = Long.parseLong(a.get(0).token.lexeme);
                     begin.add(new BasicBlock.Code() {{ opcode = 0x01; param = val;}}); 
                 } else if (a.get(0).token.is(Token.TYPE_LITS)) {
                     addVariable(globalEnv, a);
